@@ -308,28 +308,20 @@ def looking():
                     z = angles[2] * 360
 
                     if y < -10:
-                        return "Looking Left"
+                        return redirect(url_for('test'))
                     elif y > 10:
-                        return "Looking Right"
+                        return redirect(url_for('test'))
                     elif x > 10:
                         text = "Looking Up"
-                        return "Looking Up"
                     else:
                         text = "Forward"
-                        return "Looking Down"
 
                     cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
 
-#             mp_drawing.draw_landmarks(
-#                 image=image,
-#                 landmark_list=face_landmarks,
-#                 connections=FACE_CONNECTIONS,
-#                 landmark_drawing_spec=drawing_spec,
-#                 connection_drawing_spec=drawing_spec)
+
             cv2.imshow('Head Pose Estimation', image)
         
-            # if text in ["Looking Left","Looking Right"]:
-            #     break
+
             if cv2.waitKey(5) & 0xFF == 27:
                 break 
 
@@ -340,11 +332,8 @@ def looking():
 def startcam():
     global logged_in_user
     if session.get('logged_in_user'):
-        result = looking()
-        if result in ["Looking Left", "Looking Right"]:
-            return redirect(url_for('test'))
-        else:
-            return render_template("blog.html")
+        result=looking()
+        return result
             
     else:
         return redirect(url_for('login'))
