@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+
+
+    {% block title %}Quiz{% endblock title %}
+    {% block style %}
+    <style>
+    
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: auto;
+                margin-top: 27px;
+                background-color: white;
+                width: 60%;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .content {
+                max-width: 600px;
+                width: 100%;
+                padding: 20px;
+                text-align: center; /* Center align content */
+                font-family: cursive;
+            }
+            .questions-heading {
+                font-size: 55px;
+                margin-bottom: 20px;
+                color: #262626;
+            }
+            .question-list {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+            .question-item {
+                background-color: #f9f9f9;
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 20px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                text-align: left; /* Align text within question items to left */
+            }
+            .question-item p {
+                margin: 0;
+                color: #262626;
+                font-weight: bold;
+            }
+            .question-label {
+                color: #262626;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+            .answer-textarea {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                resize: none;
+            }
+            .submit-btn {
+                padding: 10px 20px;
+                background-color: #3897f0;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .submit-btn:hover {
+                background-color: #3578e5;
+            }
+            .next {
+                display: block;
+                text-align: center;
+                margin-top: 20px;
+                text-decoration: none;
+                color: #3897f0;
+                font-weight: bold;
+            }
+            .named{
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #6c757d;
+            }
+    </style>
+    {% endblock style %}
+
+  {% block body %}
+<div class="container">
+    <div class="content">
+        <h1 class="questions-heading">Questions</h1>
+        <ol class="question-list">
+            {% for question in questions %}
+            <li class="question-item">
+                <p class="named">{{ named[loop.index0] }} asked this question:</p>
+                <p>{{ loop.index }}. {{ question }}</p>
+                <form action="{{ url_for('submit_answer', question_index=loop.index0) }}" method="post" class="answer-form">
+                    
+                    <textarea id="answer{{ loop.index0 }}" name="answer" rows="4" class="answer-textarea" placeholder="Answer above question if you know the answer"></textarea><br>
+                    <input type="hidden" name="question" value="{{ question }}">
+                    <input type="submit" value="Submit Answer" class="submit-btn">
+                </form>
+            </li>
+            {% endfor %}
+        </ol>
+        <a href="{{ url_for('ask_question') }}" class="next">Ask a question</a>
+        <a href="{{ url_for('answers') }}" class="next">See Answers</a>
+    </div>
+</div>
+{% endblock body %}
+

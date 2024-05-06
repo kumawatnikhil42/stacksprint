@@ -1,0 +1,111 @@
+{% extends "base.html" %} {% block title %}Blog{% endblock title %} {% block
+body %}
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      {% for blog_entry in blog_data %}
+      <div class="card mb-4">
+        <img
+          src="{{ url_for('static', filename=blog_entry['Image']) }}"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h2 class="card-title">{{ blog_entry['Titles'] }}</h2>
+          <p class="card-text blog-content">
+            {{ blog_entry['Contents'] | truncate(100, True, '...') }}
+          </p>
+          <p class="card-text" style="display: none">
+            {{ blog_entry['Contents'] }}
+          </p>
+          <!-- No Read More button -->
+        </div>
+        <div class="card-footer text-muted">
+          Posted on {{ blog_entry['Date'] }} by
+          <a href="#">{{ blog_entry['Name'] }}</a>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Placeholder for a static blog post -->
+      <div class="card mb-4">
+        <img
+          src="{{ url_for('static', filename='image59.jpg') }}"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h2 class="card-title">Unveiling the Future</h2>
+          <p class="card-text">
+            In a world driven by data and propelled by innovation, Artificial
+            Intelligence (AI) stands as the cornerstone of technological
+            advancement. From the intricate algorithms that power recommendation
+            systems to the complex neural networks that enable autonomous
+            vehicles, AI permeates every aspect of modern society. Its impact is
+            profound, revolutionizing industries, reshaping human interactions,
+            and unlocking new frontiers of possibility. With the ability to
+            learn, reason, and adapt, AI algorithms continually push the
+            boundaries of what machines can achieve. Whether it's predicting
+            market trends, diagnosing medical conditions, or composing music,
+            AI's capabilities seem limitless. However, as we marvel at AI's
+            accomplishments, we must also grapple with ethical considerations,
+            ensuring that AI systems are transparent, accountable, and free from
+            bias. As we navigate the ever-evolving landscape of AI, one thing
+            remains certain: the future holds boundless opportunities for
+            innovation and discovery
+          </p>
+        </div>
+        <div class="card-footer text-muted">
+          Posted on 2024-04-24 by
+          <a href="#">Nikhil</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card mb-4 position-fixed top-45">
+        <div class="card-body">
+          <h5 class="card-title">Write Your Own Blog</h5>
+          <p class="card-text">
+            Ready to share your thoughts? Create your own blog post now!
+          </p>
+          <a
+            href="{{ url_for('createblog') }}"
+            class="btn btn-success btn-block">Create Blog
+          </a>
+
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Quote of the Day</h5>
+          <iframe src="https://notion-quotes-asnhvg7g6-hiscodesmells.vercel.app/quote?theme=dark&fontSize=heading-3&quoteType=technology" frameborder="0" width="100%" height="400"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document
+    .querySelectorAll(".card-text.blog-content")
+    .forEach(function (content) {
+      var truncatedContent = content.innerHTML;
+      content.innerHTML = truncatedContent.substring(0, 100) + "readmore";
+      var fullContent = content.parentElement.querySelector(
+        ".card-text:not(.blog-content)"
+      );
+      fullContent.style.display = "none";
+
+      content.addEventListener("click", function () {
+        if (content.classList.contains("expanded")) {
+          content.innerHTML = truncatedContent.substring(0, 100) + "readmore";
+          fullContent.style.display = "none";
+          content.classList.remove("expanded");
+        } else {
+          content.innerHTML = truncatedContent + "readless";
+          fullContent.style.display = "block";
+          content.classList.add("expanded");
+        }
+      });
+    });
+</script>
+{% endblock body %}

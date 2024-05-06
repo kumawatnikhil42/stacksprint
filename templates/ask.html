@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+
+
+   {% block title %}Ask Question{% endblock title %}<
+    {% block style %}
+    <style>
+        .container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: auto;
+          margin-top: 27px;
+          background-color: white;
+          width: 60%;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            
+        }
+        .content{
+          max-width: 600px;
+          width: 100%;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center; /* Center align content */
+          font-family: Arial, sans-serif;
+        }
+        .question-heading {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            font-size: 55px;
+        }
+
+        .question-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .question-textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    {% endblock style %}
+
+  {% block body %}
+  <div class="container">
+    <div class="content">
+      <h1 class="question-heading">Ask a Question</h1>
+    <form action="{{ url_for('ask_question') }}" method="post" class="question-form">
+      
+      
+        <label for="question" class="question-label">Question:</label><br>
+        <textarea id="question" name="question" rows="4" cols="50" class="question-textarea"></textarea><br>
+        <input type="submit" value="Submit" class="submit-btn">
+      
+    </form>
+  </div>
+</div>
+{% endblock body %}
+

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-dpuaG1suU0eT09tx5plTaGMLBsfDLzUCCUXOY2j/LSvXYuG6Bqs43ALlhIqAJVRb" crossorigin="anonymous">
+    <title>{% block title %}Machine Learning Mcqs{% endblock title %}</title>
+    {% block style %}
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+
+    .centered-div {
+        padding: 20px;
+        text-align: center;
+    }
+</style>
+{% endblock style %}
+</head>
+
+<body>
+    {% block body %}
+    <div class="container">
+        <div class="centered-div">
+        <a href="{{ url_for('startcam') }}" ><h2>Start<h2></a>
+            <p>Look Forward Otherwise You will Out</p>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdAPzFfDiH6iu5HTWv3CdiCltn2wj2TiLCDHMCgCXCdtY6sGw/viewform?embedded=true" width="640" height="3256" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+</div>
+</div>
+    {% endblock body %}
+</body>
+
+</html>

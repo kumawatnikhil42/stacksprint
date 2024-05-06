@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+    {% block title %}Deep Learning Mcqs{% endblock title %} 
+    {% block style %}
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+
+    .centered-div {
+        padding: 20px;
+        text-align: center;
+    }
+</style>
+{% endblock style %}
+
+    {% block body %}
+    <div class="container">
+        <div class="centered-div">
+        <a href="{{ url_for('startcam') }}" ><h2>Start<h2></a>
+            <p>Look Forward Otherwise You will Out</p>
+        <iframe  src="https://docs.google.com/forms/d/e/1FAIpQLSefROCivf_llqCdNhIpSKcpDNVdR0wSqEYm1Yxcdvak0fFsnw/viewform?embedded=true" width="640" height="3344" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+</div>
+
+        {% endblock body %}

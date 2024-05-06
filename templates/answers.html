@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+    {% block title %}Quiz{% endblock title %}
+    {% block style %}
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            margin-top: 27px;
+            background-color: white;
+            width: 60%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center; /* Center align content */
+            font-family: Arial, sans-serif;
+            
+        }
+
+        .question-item {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left; /* Align text within question items to left */
+        }
+        .question-heading{
+            font-size: 55px;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+        .named{
+            display:flex;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #6c757d;;
+        }
+    </style>
+    {% endblock style %}
+
+
+
+    {% block body %}
+    <div class="container">
+    <div class="content">
+        <h1 class="question-heading">Answers</h1>
+        <ul>
+            {% for i in range(questions|length) %}
+            <p class="named">{{named[i]}} answer this:</p>
+            <li class="question-item">{{ questions[i] }} : {{ answers[i] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock body %}
+

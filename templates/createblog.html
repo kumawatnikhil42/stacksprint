@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Create Blog{% endblock title %}
+{% block styles %}
+  <style>
+    /* LinkedIn-style file input */
+    .custom-file-label::after {
+      content: "Choose image...";
+    }
+    .custom-file-input:lang(en)~.custom-file-label::after {
+      content: "Browse";
+    }
+
+    /* LinkedIn-style card and form styles */
+    .card {
+      border-radius: 8px;
+      border: 1px solid #e5e5e5;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+      border-bottom: none;
+      background-color: #f3f6f8;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .form-control:focus {
+      border-color: #0073b1; /* LinkedIn blue */
+      box-shadow: 0 0 0 0.2rem rgba(0, 115, 177, 0.25);
+    }
+    .btn-primary {
+      color: #fff;
+      background-color: #0073b1; /* LinkedIn blue */
+      border-color: #0073b1; /* LinkedIn blue */
+      border-radius: 20px;
+      padding: 10px 25px;
+    }
+    .btn-primary:hover {
+      background-color: #005a8e; /* Darker LinkedIn blue on hover */
+      border-color: #005a8e; /* Darker LinkedIn blue on hover */
+    }
+    .custom-file {
+      margin-bottom: 20px;
+    }
+    .custom-file-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      background-color: #f3f6f8; /* Match card background */
+      border: 1px solid #ced4da; /* Bootstrap default input border color */
+      border-radius: 20px; /* Match button's border-radius */
+      padding: 8px 12px; /* Match button's padding */
+    }
+    .form-group {
+      margin-bottom: 25px;
+    }
+  </style>
+{% endblock styles %}
+{% block body %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card shadow">
+        <div class="card-header bg-white">
+          <h2 class="mb-0">Write Your Blog</h2>
+          <p class="text-muted">Share your thoughts and experiences with the world.</p>
+        </div>
+        <div class="card-body">
+          <form action="{{ url_for('submit_blog') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <input type="text" class="form-control" id="title" name="title" placeholder="Enter a catchy title" required>
+              <small class="form-text text-muted">Provide a clear and captivating title for your blog post.</small>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" id="content" name="content" rows="6" placeholder="Write your blog post here" required></textarea>
+              <small class="form-text text-muted">Compose your blog post with engaging content that resonates with your audience.</small>
+            </div>
+            <div class="form-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" required>
+                <label class="custom-file-label" for="image">Choose image...</label> <!-- Label for the file input -->
+              </div>
+              <small class="form-text text-muted">Select an image to accompany your blog post and make it visually appealing.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Publish</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

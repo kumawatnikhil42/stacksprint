@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Test{% endblock title %}
+
+{% block style %}
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30vh; /* Adjusted height for full viewport height */
+    }
+
+    .centered-div {
+        background-color: #ffffff; /* Changed background color to white */
+        padding: 40px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Enhanced box shadow */
+        max-width: 400px; /* Added max-width for better responsiveness */
+        width: 80%; /* Adjusted width for responsiveness */
+    }
+
+    .button {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 24px; /* Increased padding for better button size */
+        font-size: 18px; /* Increased font size for better readability */
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+
+    .heading {
+        margin-bottom: 20px; /* Added margin bottom for separation */
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="centered-div">
+            <h1 class="heading">Welcome to TestLab</h1> <!-- Added a welcome message -->
+            <p>Explore our topics:</p>
+            <a href="{{ url_for('python') }}" class="button">Python</a>
+            <a href="{{ url_for('ml') }}" class="button">Machine Learning</a>
+            <a href="{{ url_for('dl') }}" class="button">Deep Learning</a>
+            <a href="{{ url_for('powerbi') }}" class="button">PowerBI</a>
+            <a href="{{ url_for('excel') }}" class="button">Excel</a>
+        </div>
+    </div>
+
+{% endblock body %}

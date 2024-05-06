@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}QR Code Scanner{% endblock title %}
+
+{% block style %}
+<style>
+
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 90vh;
+    }
+
+    .content {
+        text-align: center;
+    }
+
+    #video {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        border: 2px solid #343a40;
+        border-radius: 5px;
+    }
+
+    .message {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #007bff; /* Changed background color to a professional blue */
+        color: #fff;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .text {
+        background: #007bff; /* Match background color with the message */
+        color: #fff; /* Match text color with the message */
+        padding: 10px; /* Add padding for better readability */
+        border-radius: 5px; /* Add border radius for a modern look */
+        margin-bottom: 20px; /* Add margin to separate from other elements */
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+<div class="center-container">
+    <div class="content">
+        <h2 class="text">Attendance Code Scanner</h2>
+        <video id="video"></video>
+        <p class="text">Scan the QR Code provided in your registered email.</p>
+    </div>
+</div>
+<div class="message" id="message"></div>
+
+<!-- Add a script to handle QR code scanning -->
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script>
+    let scanner = new Instascan.Scanner({ video: document.getElementById('video') });
+
+    scanner.addListener('scan', function(content) {
+        // Access the content of the scanned QR code
+        console.log('Scanned content:', content);
+        
+        // Send the scanned content to the backend
+        sendScannedContent(content);
+    
+    });
+
+    function sendScannedContent(content) {
+        // Make an HTTP POST request to your backend endpoint
+        fetch('/process_qr_code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content: content })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Stop the scanner after a successful scan
+            scanner.stop();
+            // Display a success message on the page
+            document.getElementById('message').innerHTML = '<p>Scan successful.</p>';
+            document.getElementById('message').style.display = 'block'; // Show message
+        })
+        .catch(error => {
+            console.error('Error sending scanned content to the backend:', error);
+        });
+    }
+
+    Instascan.Camera.getCameras().then(function(cameras) {
+        if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error('No cameras found.');
+        }
+    }).catch(function(e) {
+        console.error(e);
+    });
+</script>
+
+{% endblock body %}
