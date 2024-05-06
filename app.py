@@ -308,9 +308,9 @@ def looking():
                     z = angles[2] * 360
 
                     if y < -10:
-                        return redirect(url_for('test'))
+                        return "Looking Left"
                     elif y > 10:
-                        return redirect(url_for('test'))
+                        return "Looking Right"
                     elif x > 10:
                         text = "Looking Up"
                     else:
