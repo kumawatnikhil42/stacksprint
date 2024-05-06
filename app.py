@@ -338,8 +338,9 @@ def looking():
 def startcam():
     global logged_in_user
     if session.get('logged_in_user'):
-        result=looking()
-        return result
+        result = looking()
+        if result in ["Looking Left", "Looking Right"]:
+            return redirect(url_for('test'))
             
     else:
         return redirect(url_for('login'))
