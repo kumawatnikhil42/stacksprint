@@ -341,6 +341,8 @@ def startcam():
         result = looking()
         if result in ["Looking Left", "Looking Right"]:
             return redirect(url_for('test'))
+        else:
+            return render_template("blog.html")
             
     else:
         return redirect(url_for('login'))
