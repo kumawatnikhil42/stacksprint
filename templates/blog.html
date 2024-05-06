@@ -6,7 +6,7 @@ body %}
       {% for blog_entry in blog_data %}
       <div class="card mb-4">
         <img
-          src="{{ url_for('static', filename=blog_entry['Image']) }}"
+          src="{{ url_for('static', filename='uploads/'+blog_entry['Image']) }}"
           class="card-img-top"
           alt="..."
         />
