@@ -308,9 +308,9 @@ def looking():
                     z = angles[2] * 360
 
                     if y < -10:
-                        return "Looking Left"
+                        return redirect(url_for('test'))
                     elif y > 10:
-                        return "Looking Right"
+                        return redirect(url_for('test'))
                     elif x > 10:
                         text = "Looking Up"
                     else:
@@ -338,7 +338,9 @@ def looking():
 def startcam():
     global logged_in_user
     if session.get('logged_in_user'):
-            return redirect(url_for('test', camera_status=looking()))
+        result=looking()
+        return result
+            
     else:
         return redirect(url_for('login'))
     
@@ -446,4 +448,4 @@ def submit_blog():
     else:
         return redirect(url_for('login'))
 if __name__=="__main__":
-    app.run(debug=False)
+    app.run(debug=True)
