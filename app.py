@@ -313,8 +313,10 @@ def looking():
                         return "Looking Right"
                     elif x > 10:
                         text = "Looking Up"
+                        return "Looking Up"
                     else:
                         text = "Forward"
+                        return "Looking Down"
 
                     cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
 
