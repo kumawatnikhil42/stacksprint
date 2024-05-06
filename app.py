@@ -54,7 +54,7 @@ def send_email(to_email,attachment_path):
         server.login("trendtrove31@gmail.com", "ejyj jexe genk ovud")
         server.sendmail("trendtrove31@gmail.com", to_email, msg.as_string())
         server.quit()
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'static/uploads'
 
 # Specify the allowed extensions for uploaded files
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
