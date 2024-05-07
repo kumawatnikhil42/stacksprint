@@ -308,13 +308,10 @@ def looking():
                     z = angles[2] * 360
 
                     if y < -10:
-                        text="Left"
+                        return redirect(url_for('test'))
                     elif y > 10:
-                        text="Right"
-                    elif x > 10:
-                        text = "Looking Up"
-                    else:
-                        text = "Forward"
+                        return redirect(url_for('test'))
+
 
                     cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
 
