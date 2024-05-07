@@ -256,7 +256,7 @@ def looking():
 
     cap = cv2.VideoCapture(0)
 
-    result = None  # Initialize the result variable outside the loop
+    redirect_flag = False  # Initialize the redirect flag
 
     with mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, min_detection_confidence=0.5) as face_mesh:
         while cap.isOpened():
@@ -303,9 +303,10 @@ def looking():
                     z = angles[2] * 360
 
                     if y < -10:
-                        result = redirect(url_for('test'))
+                        redirect_flag = True  # Set the redirect flag
+
                     elif y > 10:
-                        result = redirect(url_for('test'))
+                        redirect_flag = True  # Set the redirect flag
 
                     cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
 
@@ -316,8 +317,11 @@ def looking():
 
     cap.release()
     cv2.destroyAllWindows()
-    
-    return result
+
+    if redirect_flag:
+        return redirect(url_for('test'))
+    else:
+        return None  # Return None if no redirection is needed
 @app.route("/startcam")
 def startcam():
     global logged_in_user
