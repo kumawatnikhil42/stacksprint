@@ -256,8 +256,6 @@ def looking():
 
     cap = cv2.VideoCapture(0)
 
-    redirect_url = None  # Initialize the redirection URL variable
-
     with mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, min_detection_confidence=0.5) as face_mesh:
         while cap.isOpened():
             success, image = cap.read()
@@ -281,15 +279,22 @@ def looking():
             if results.multi_face_landmarks:
                 for face_landmarks in results.multi_face_landmarks:
                     for idx, lm in enumerate(face_landmarks.landmark):
-                        # Face landmark data processing...
+                        if idx in [33, 263, 1, 61, 291, 199]:
+                            if idx == 1:
+                                nose_2d = (lm.x * img_width, lm.y * img_height)
+                                nose_3d = (lm.x * img_width, lm.y * img_height, lm.z * 3000)
+                            x, y = int(lm.x * img_width), int(lm.y * img_height)
+
+                            face_2d.append([x, y])
+                            face_3d.append([x, y, lm.z])
 
                     face_2d = np.array(face_2d, dtype=np.float64)
                     face_3d = np.array(face_3d, dtype=np.float64)
 
                     focal_length = 1 * img_width
                     cam_matrix = np.array([[focal_length, 0, img_width / 2],
-                                           [0, focal_length, img_height / 2],
-                                           [0, 0, 1]])
+                                       [0, focal_length, img_height / 2],
+                                       [0, 0, 1]])
 
                     dist_matrix = np.zeros((4, 1), dtype=np.float64)
 
@@ -302,13 +307,20 @@ def looking():
                     y = angles[1] * 360
                     z = angles[2] * 360
 
-                    if y < -10 or y > 10:
-                        redirect_url = url_for('test')  # Set the redirection URL
-                        break  # Exit the loop if redirection is needed
+                    if y < -10:
+                        return redirect(url_for('test'))
+                    elif y > 10:
+                        return redirect(url_for('test'))
+                    elif x > 10:
+                        text = "Looking Up"
+                    else:
+                        text = "Forward"
 
                     cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
 
+
             cv2.imshow('Head Pose Estimation', image)
+        
 
             if cv2.waitKey(5) & 0xFF == 27:
                 break 
@@ -316,10 +328,6 @@ def looking():
     cap.release()
     cv2.destroyAllWindows()
 
-    if redirect_url:
-        return redirect(redirect_url)  # Perform the redirection
-    else:
-        return None   # Return None if no redirection is needed
 @app.route("/startcam")
 def startcam():
     global logged_in_user
