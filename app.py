@@ -308,9 +308,9 @@ def looking():
                     z = angles[2] * 360
 
                     if y < -10:
-                        return redirect(url_for('test'))
+                        result= redirect(url_for('test'))
                     elif y > 10:
-                        return redirect(url_for('test'))
+                        result= redirect(url_for('test'))
 
 
                     cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
@@ -324,7 +324,7 @@ def looking():
 
     cap.release()
     cv2.destroyAllWindows()
-
+    return result
 @app.route("/startcam")
 def startcam():
     global logged_in_user
