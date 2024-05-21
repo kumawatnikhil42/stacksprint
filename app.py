@@ -333,7 +333,7 @@ def startcam():
         if result == "left_right":
             return redirect(url_for('test'))
         else:
-            return "Camera feed started"  # Or any other response
+            pass  # Or any other response
     else:
         return redirect(url_for('login'))
 
