@@ -224,34 +224,33 @@ def excel():
 
 def looking():
     mp_face_mesh = mp.solutions.face_mesh
-    face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5)
-    FACE_CONNECTIONS = [
-    (0, 1), (1, 2), (2, 3), (3, 4),
-    (5, 6), (6, 7), (7, 8),
-    (9, 10), (10, 11), (11, 12),
-    (13, 14), (14, 15), (15, 16),
-    (17, 18), (18, 19), (19, 20),
-    (21, 22), (22, 23), (23, 24),
-    (25, 26), (26, 27), (27, 28),
-    (29, 30), (30, 31), (31, 32),
-    (33, 34), (34, 35), (35, 36),
-    (37, 38), (38, 39), (39, 40),
-    (41, 42), (42, 43), (43, 44),
-    (45, 46), (46, 47), (47, 48),
-    (49, 50), (50, 51), (51, 52),
-    (53, 54), (54, 55), (55, 56),
-    (57, 58), (58, 59), (59, 48),
-    (60, 61), (61, 62), (62, 63),
-    (64, 65), (65, 66), (66, 67),
-    (68, 69), (69, 70), (70, 71),
-    (72, 73), (73, 74), (74, 75),
-    (76, 77), (77, 78), (78, 79),
-    (80, 81), (81, 82), (82, 83),
-    (84, 85), (85, 86), (86, 87),
-    (88, 89), (89, 90), (90, 91)
-]
-
     mp_drawing = mp.solutions.drawing_utils
+    FACE_CONNECTIONS = [
+        (0, 1), (1, 2), (2, 3), (3, 4),
+        (5, 6), (6, 7), (7, 8),
+        (9, 10), (10, 11), (11, 12),
+        (13, 14), (14, 15), (15, 16),
+        (17, 18), (18, 19), (19, 20),
+        (21, 22), (22, 23), (23, 24),
+        (25, 26), (26, 27), (27, 28),
+        (29, 30), (30, 31), (31, 32),
+        (33, 34), (34, 35), (35, 36),
+        (37, 38), (38, 39), (39, 40),
+        (41, 42), (42, 43), (43, 44),
+        (45, 46), (46, 47), (47, 48),
+        (49, 50), (50, 51), (51, 52),
+        (53, 54), (54, 55), (55, 56),
+        (57, 58), (58, 59), (59, 48),
+        (60, 61), (61, 62), (62, 63),
+        (64, 65), (65, 66), (66, 67),
+        (68, 69), (69, 70), (70, 71),
+        (72, 73), (73, 74), (74, 75),
+        (76, 77), (77, 78), (78, 79),
+        (80, 81), (81, 82), (82, 83),
+        (84, 85), (85, 86), (86, 87),
+        (88, 89), (89, 90), (90, 91)
+    ]
+
     drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1)
 
     cap = cv2.VideoCapture(0)
@@ -301,26 +300,24 @@ def looking():
                     success, rot_vec, trans_vec = cv2.solvePnP(face_3d, face_2d, cam_matrix, dist_matrix)
 
                     rmat, jac = cv2.Rodrigues(rot_vec)
-                    angles, mtxr, mtxQ, Qx, Qy, Qz = cv2.RQDecomp3x3(rmat)
+                    angles, mtxr, _, _, _, _ = cv2.RQDecomp3x3(rmat)
 
                     x = angles[0] * 360
                     y = angles[1] * 360
                     z = angles[2] * 360
 
-                    if y < -10:
-                        return redirect(url_for('test'))
-                    elif y > 10:
-                        return redirect(url_for('test'))
+                    if y < -10 or y > 10:
+                        return "left_right" 
                     elif x > 10:
-                        text = "Looking Up"
+                        print("Looking Right")
                     else:
-                        text = "Forward"
+                        print("Looking Forward")
+
+                    text = "Forward" if x <= 10 else "Looking Right"
 
                     cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
 
-
             cv2.imshow('Head Pose Estimation', image)
-        
 
             if cv2.waitKey(5) & 0xFF == 27:
                 break 
@@ -331,12 +328,15 @@ def looking():
 @app.route("/startcam")
 def startcam():
     global logged_in_user
-    if session.get('logged_in_user'):
-        result=looking()
-        return result
-            
+    if session.get('logged_in_user') is not None:
+        result = looking()
+        if result == "left_right":
+            return redirect(url_for('test'))
+        else:
+            return "Camera feed started"  # Or any other response
     else:
         return redirect(url_for('login'))
+
     
 @app.route("/logout")
 def logout():
