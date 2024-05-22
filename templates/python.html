@@ -15,6 +15,17 @@
         padding: 20px;
         text-align: center;
     }
+    .video-container {
+        position: fixed;
+        top: 200px;
+        right: -52px;
+        width: 320px;
+        height: 240px;
+    }
+    .video {
+        width: 80%;
+        height: 80%;
+    }
 </style>
 {% endblock style %}
     
@@ -26,7 +37,24 @@
         <p>Look Forward Otherwise You will Out</p>
     <iframe id="form-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScVi0Mk42tYP3KxRpnzp2b79inWnUjbktJdFhgUDwQbIWPqeA/viewform?embedded=true" width="640" height="3616" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
 </div>
+<div class="video-container">
+    <img class="video" src="{{ url_for('startcam') }}" alt="Webcam Feed" id="video">
 </div>
+</div>
+<script>
+    async function checkRedirect() {
+        const response = await fetch('/check_redirect');
+        const data = await response.json();
+        if (data.redirect) {
+            window.location.href = "/test";
+        } else {
+            setTimeout(checkRedirect, 1000); // Check every second
+        }
+    }
+
+    // Start checking for redirection
+    checkRedirect();
+</script>
 
 
 
