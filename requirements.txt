@@ -8,3 +8,4 @@ mediapipe==0.10.11
 opencv-python==4.9.0.80
 google-auth==2.28.1
 google-auth-oauthlib==1.2.0
+Werkzeug==2.2.3
