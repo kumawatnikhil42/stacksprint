@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request, redirect, url_for,Response,session
+from flask import Flask,render_template,request, redirect, url_for,Response,session,jsonify
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import qrcode
@@ -15,6 +15,8 @@ import mediapipe as mp
 import numpy as np
 import os
 from werkzeug.utils import secure_filename
+import threading
+import base64
 # spreadsheet
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
 
@@ -222,7 +224,10 @@ def excel():
     else:
         return redirect(url_for('login'))
 
+redirect_flag=False
+lock = threading.Lock()
 def looking():
+    global redirect_flag, lock
     mp_face_mesh = mp.solutions.face_mesh
     mp_drawing = mp.solutions.drawing_utils
     FACE_CONNECTIONS = [
@@ -305,22 +310,25 @@ def looking():
                     x = angles[0] * 360
                     y = angles[1] * 360
                     z = angles[2] * 360
+                    with lock:
+                        if y < -10 or y > 10:
+                            redirect_flag = True
+                        else:
+                            redirect_flag=False
+            if redirect_flag:
+                cap.release()
+                cv2.destroyAllWindows()
+                return
 
-                    if y < -10 or y > 10:
-                        return "left_right" 
-                    elif x > 10:
-                        print("Looking Right")
-                    else:
-                        print("Looking Forward")
+                   
 
-                    text = "Forward" if x <= 10 else "Looking Right"
+                    
 
-                    cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
+            ret, buffer = cv2.imencode('.jpg', image)
+            frame = buffer.tobytes()
 
-            cv2.imshow('Head Pose Estimation', image)
-
-            if cv2.waitKey(5) & 0xFF == 27:
-                break 
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
     cap.release()
     cv2.destroyAllWindows()
@@ -329,13 +337,21 @@ def looking():
 def startcam():
     global logged_in_user
     if session.get('logged_in_user') is not None:
-        result = looking()
-        if result == "left_right":
-            return redirect(url_for('test'))
-        else:
-            pass  # Or any other response
+
+        return Response( looking(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
     else:
         return redirect(url_for('login'))
+    
+@app.route("/check_redirect")
+def check_redirect():
+    global redirect_flag, lock
+    with lock:
+        if redirect_flag:
+            redirect_flag=False
+            return jsonify(redirect=True)
+        else:
+            return jsonify(redirect=False)
 
     
 @app.route("/logout")
